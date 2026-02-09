@@ -2,25 +2,25 @@
 # define PHILOSOPHERS_H
 
 
-# include "../libft.h"
+# include "../libft/libft.h"
 # include <pthread.h>
 # include <sys/time.h> 
 
-typedef_struct s_philo t_philo;
-typedef_struct s_table t_table;
+typedef struct s_philo t_philo;
+typedef struct s_table t_table;
 
 typedef struct s_philo
 {
-	int				meals_eaten;
-	int 			index;
-	long			last_meal;
-	t_table			table;
-	t_philo			*left_philo;
-	t_philo			*right_philo;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	pthread_t		thread;
-}					t_philo;
+	int						meals_eaten;
+	int 					index;
+	long					last_meal;
+	struct s_table			*table;
+	struct s_philo			*left_philo;
+	struct s_philo			*right_philo;
+	pthread_mutex_t			*left_fork;
+	pthread_mutex_t			*right_fork;
+	pthread_t				thread;
+}							t_philo;
 
 
 typedef struct s_table
@@ -38,5 +38,12 @@ typedef struct s_table
 	pthread_mutex_t		stop_mutex;
 	pthread_t			monitor;	
 }						t_table;
+
+
+// Parsing
+void	handle_input(t_table *table, char **input);
+void 	check_input(char **input);
+void 	error_exit(int errnum);
+
 
 #endif

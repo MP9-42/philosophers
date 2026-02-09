@@ -6,11 +6,11 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:27:55 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/09 13:49:56 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/09 14:35:04 by MP9              ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
-#include "includes/philosophers.h"
+#include "../includes/philosophers.h"
 
 void error_exit(int errnum)
 {

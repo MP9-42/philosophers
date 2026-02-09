@@ -6,11 +6,11 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:38:31 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/09 14:17:37 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/09 15:02:08 by MP9              ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
-#include "includes/philosophers.h"
+#include "../includes/philosophers.h"
 
 void check_input(char **input)
 {
@@ -23,13 +23,17 @@ void check_input(char **input)
 	{
 		while(input[bi][si] != '\0')
 		{
-			if(ft_isalpha(input[bi][si]) == 1 || input[bi][si] == '-')
+			if (input[bi][si] == ' ' || input[bi][si] == '+')
+				si++;
+			else if (ft_isdigit(input[bi][si]) == 0)
 				error_exit(1);
 			si++;
 		}
 		si = 0;
 		bi++;
 	}
+	if (bi < 4)
+		error_exit(0);
 }
 
 void handle_input(t_table *table, char **input)
@@ -46,5 +50,4 @@ void handle_input(t_table *table, char **input)
 		table->max_meal = ft_atoi(input[4]);
 	else
 		table->max_meal = 0;
-	
 }
