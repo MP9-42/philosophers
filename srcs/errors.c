@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
@@ -6,13 +6,28 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:27:55 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/09 14:35:04 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/11 13:23:31 by MP9              ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-void error_exit(int errnum)
+void	error_exitpt2(int errnum, t_table *table)
+{
+	if (errnum == 4)
+	{
+		ft_printf("Couldn't allocate memory for the philos!\n");
+		free(table->forks);
+		free(table);
+		exit(4);
+	}
+	else if (errnum = 5)
+	{
+		
+	}
+}
+
+void	error_exit(int errnum, t_table *table)
 {
 	if (errnum == 0)
 	{
@@ -30,4 +45,12 @@ void error_exit(int errnum)
 		ft_printf("Couldn't allocate memory for the table!\n");
 		exit(2);
 	}
+	else if(errnum == 3)
+	{
+		ft_printf("Couldn't allocate memory for the forks!\n");
+		free(table);
+		exit(3);
+	}
+	else
+		error_exitpt2(errnum, table);
 }

@@ -13,10 +13,7 @@ typedef struct s_philo
 {
 	int						meals_eaten;
 	int 					index;
-	long					last_meal;
-	struct s_table			*table;
-	struct s_philo			*left_philo;
-	struct s_philo			*right_philo;
+	long					last_meal_time;
 	pthread_mutex_t			*left_fork;
 	pthread_mutex_t			*right_fork;
 	pthread_t				thread;
@@ -43,7 +40,13 @@ typedef struct s_table
 // Parsing
 void	handle_input(t_table *table, char **input);
 void 	check_input(char **input);
+void	init_mutexes(t_table *table);
+
+
+//error handling
 void 	error_exit(int errnum);
+void	error_exitpt2(int errnum, t_table *table);
+
 
 
 #endif

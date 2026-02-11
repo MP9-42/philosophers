@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:38:31 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/09 15:02:08 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/11 13:21:33 by MP9              ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
@@ -36,9 +36,17 @@ void check_input(char **input)
 		error_exit(0);
 }
 
+void	init_mutexes(t_table *table)
+{
+	
+}
+
 void handle_input(t_table *table, char **input)
 {
+	struct timeval tv;
+
 	check_input(input);
+	gettimeofday(&tv, NULL);
 	table = malloc(sizeof(t_table) * 1);
 	if (!table)
 		error_exit(2);
@@ -50,4 +58,13 @@ void handle_input(t_table *table, char **input)
 		table->max_meal = ft_atoi(input[4]);
 	else
 		table->max_meal = 0;
+	table->start_time = tv.tv_usec;
+	table->stop = 0;
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->size);
+	if (!table->forks)
+		error_exit(3);
+	table->philos = malloc(sizeof(t_philo) * table->size);
+	if (!table->philos)
+		error_exit(4);
+	init_mutexes(table);
 }
