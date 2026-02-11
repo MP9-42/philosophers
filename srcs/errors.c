@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:27:55 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/11 13:23:31 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/11 13:36:55 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ void	error_exitpt2(int errnum, t_table *table)
 	}
 	else if (errnum = 5)
 	{
-		
+		ft_printf("Couldn't allocate memory for the philos!\n");
+		free(table->philos);
+		free(table->forks);
+		free(table);
+		exit(5);
 	}
 }
 

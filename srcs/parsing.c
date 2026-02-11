@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:38:31 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/11 13:21:33 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/11 13:34:33 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,14 @@ void check_input(char **input)
 
 void	init_mutexes(t_table *table)
 {
-	
+	int i = 0;
+	while (i < table->size)
+	{
+		pthread_mutex_init(&(table->forks[i]), NULL);
+		if (pthread_mutex_init(&(table->forks[i]), NULL) != 0)
+			error_exitpt2(5, table);
+		i++;
+	}
 }
 
 void handle_input(t_table *table, char **input)

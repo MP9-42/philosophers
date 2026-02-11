@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 13:40:04 by MP9               #+#    #+#             */
-/*   Updated: 2025/10/02 19:55:55 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/11 13:51:55 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int		ft_putchar(int c);
 int		ft_putstr(char *str);
 int		ft_putnbr(int n);
 size_t	ft_strlen(const char *s);
+int		ft_putlong(long num);
 
 int		ft_putnbr_hex(unsigned long n, int uppercase);
 int		ft_putfloat(double n, int precision);

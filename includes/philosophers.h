@@ -44,7 +44,7 @@ void	init_mutexes(t_table *table);
 
 
 //error handling
-void 	error_exit(int errnum);
+void	error_exit(int errnum, t_table *table);
 void	error_exitpt2(int errnum, t_table *table);
 
 
