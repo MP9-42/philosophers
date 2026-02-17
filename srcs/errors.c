@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:27:55 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/11 13:36:55 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/17 01:47:17 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,56 @@ void	error_exitpt2(int errnum, t_table *table)
 	if (errnum == 4)
 	{
 		ft_printf("Couldn't allocate memory for the philos!\n");
-		free(table->forks);
-		free(table);
+		free_all(table);
 		exit(4);
 	}
 	else if (errnum = 5)
 	{
-		ft_printf("Couldn't allocate memory for the philos!\n");
-		free(table->philos);
-		free(table->forks);
-		free(table);
+		ft_printf("Couldn't initialize mutexes or wrong timestamps!\n");
+		free_all(table);
 		exit(5);
+	}
+	else if (errnum == 6)
+	{
+		ft_printf("Couldn't initialize mutexes!\n");
+		while ((table->size - 1) > 0)
+		{
+			pthread_mutex_destroy(&(table->forks[table->size - 1]));
+			table->size--;
+		}
+		free_all(table);
+		exit(6);
+	}
+	else
+		error_exitpt3(errnum, table);
+}
+
+void	error_exitpt3(int errnum, t_table *table)
+{
+	if (errnum == 7)
+	{
+		ft_printf("Couldn't initialize mutexes!\n");
+		while ((table->size - 1) > 0)
+		{
+			pthread_mutex_destroy(&(table->forks[table->size - 1]));
+			table->size--;
+		}
+		pthread_mutex_destroy(&table->print_mutex);
+		free_all(table);
+		exit(7);
+	}
+	if (errnum == 8)
+	{
+		ft_printf("Couldn't create thread!\n");
+		while ((table->size - 1) > 0)
+		{
+			pthread_mutex_destroy(&(table->forks[table->size - 1]));
+			table->size--;
+		}
+		pthread_mutex_destroy(&table->print_mutex);
+		pthread_mutex_destroy(&table->stop_mutex);
+		free_all(table);
+		exit(8);
 	}
 }
 

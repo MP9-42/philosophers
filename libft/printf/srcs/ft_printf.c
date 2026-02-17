@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 13:39:55 by MP9               #+#    #+#             */
-/*   Updated: 2025/10/02 19:37:13 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/17 00:55:21 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static int	format_specifier(const char *f, int i, va_list args)
 	c = f[i];
 	if (c == 'd' || c == 'i')
 		return (ft_putnbr(va_arg(args, int)));
+	if (c == 'l' && f[++i] == 'd')
+		return(ft_putlong(va_arg(args, long)));
 	if (c == 'c')
 		return (ft_putchar(va_arg(args, int)));
 	if (c == 's')
