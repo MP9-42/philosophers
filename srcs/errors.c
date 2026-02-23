@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:27:55 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/17 01:47:17 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/23 14:44:16 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	error_exitpt2(int errnum, t_table *table)
 		free_all(table);
 		exit(4);
 	}
-	else if (errnum = 5)
+	else if (errnum == 5)
 	{
 		ft_printf("Couldn't initialize mutexes or wrong timestamps!\n");
 		free_all(table);
@@ -29,11 +29,7 @@ void	error_exitpt2(int errnum, t_table *table)
 	else if (errnum == 6)
 	{
 		ft_printf("Couldn't initialize mutexes!\n");
-		while ((table->size - 1) > 0)
-		{
-			pthread_mutex_destroy(&(table->forks[table->size - 1]));
-			table->size--;
-		}
+		kill_threads(table);
 		free_all(table);
 		exit(6);
 	}
@@ -46,25 +42,14 @@ void	error_exitpt3(int errnum, t_table *table)
 	if (errnum == 7)
 	{
 		ft_printf("Couldn't initialize mutexes!\n");
-		while ((table->size - 1) > 0)
-		{
-			pthread_mutex_destroy(&(table->forks[table->size - 1]));
-			table->size--;
-		}
-		pthread_mutex_destroy(&table->print_mutex);
+		kill_threads(table);
 		free_all(table);
 		exit(7);
 	}
 	if (errnum == 8)
 	{
 		ft_printf("Couldn't create thread!\n");
-		while ((table->size - 1) > 0)
-		{
-			pthread_mutex_destroy(&(table->forks[table->size - 1]));
-			table->size--;
-		}
-		pthread_mutex_destroy(&table->print_mutex);
-		pthread_mutex_destroy(&table->stop_mutex);
+		kill_threads(table);
 		free_all(table);
 		exit(8);
 	}
@@ -75,7 +60,8 @@ void	error_exit(int errnum, t_table *table)
 	if (errnum == 0)
 	{
 		ft_printf("Wrong user input!\nUsage: ./philosophers <num_of_philos>");
-		ft_printf("<time_to_die> <time_to_eat> <time_to_sleep> [optional: num of meals]\n");
+		ft_printf("<time_to_die> <time_to_eat> <time_to_sleep> ");
+		ft_printf("[optional: num of meals]\n");
 		exit(0);
 	}
 	else if (errnum == 1)
@@ -88,7 +74,7 @@ void	error_exit(int errnum, t_table *table)
 		ft_printf("Couldn't allocate memory for the table!\n");
 		exit(2);
 	}
-	else if(errnum == 3)
+	else if (errnum == 3)
 	{
 		ft_printf("Couldn't allocate memory for the forks!\n");
 		free(table);

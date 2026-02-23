@@ -6,22 +6,22 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:38:31 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/17 01:32:31 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/23 14:59:11 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-void check_input(char **input)
+void	check_input(char **input)
 {
-	int bi;
-	int si;
-	
+	int	bi;
+	int	si;
+
 	bi = 0;
 	si = 0;
-	while(input[bi] != NULL)
+	while (input[bi] != NULL)
 	{
-		while(input[bi][si] != '\0')
+		while (input[bi][si] != '\0')
 		{
 			if (input[bi][si] == ' ' || input[bi][si] == '+')
 				si++;
@@ -38,10 +38,12 @@ void check_input(char **input)
 
 void	init_mutexes(t_table *table)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (table->time_to_sleep < 60000 || table->time_to_die < 60000
-			|| table->time_to_eat < 60000)
-			error_exit(5, table);
+		|| table->time_to_eat < 60000)
+		error_exit(5, table);
 	while (i < table->size)
 	{
 		if (pthread_mutex_init(&(table->forks[i]), NULL) != 0)
@@ -51,24 +53,25 @@ void	init_mutexes(t_table *table)
 				pthread_mutex_destroy(&(table->forks[i]));
 				i--;
 			}
-			error_exitpt2(5, table);			
+			error_exitpt2(5, table);
 		}
 		i++;
 	}
 	if (pthread_mutex_init(&(table->print_mutex), NULL) != 0)
-		error_exitpt2(6, table);	
+		error_exitpt2(6, table);
 	if (pthread_mutex_init(&(table->stop_mutex), NULL) != 0)
-		error_exitpt2(7, table);	
+		error_exitpt2(7, table);
 	if (pthread_create(&(table->monitor), NULL, /*insert func here*/, NULL) != 0)
 		error_exitpt2(8, table);
 }
 
-void handle_input(t_table *table, char **input)
+void	handle_input(t_table *table, char **input)
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	check_input(input);
 	gettimeofday(&tv, NULL);
+	table->start_time = tv.tv_usec * 1000;
 	table = malloc(sizeof(t_table) * 1);
 	if (!table)
 		error_exit(2, table);

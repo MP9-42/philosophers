@@ -17,9 +17,9 @@ static int	edge_case(long num)
 	if (num == LONG_MIN)
 	{
 		if (write(1, "-9223372036854775808", 20) == -1)
-			return(-1);
+			return (-1);
 	}
-	return(20);
+	return (20);
 }
 
 int	ft_putlong(long num)
