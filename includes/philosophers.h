@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/23 16:29:51 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/23 17:29:33 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ void	check_input(char **input);
 // Initilization
 void	init_mutexes(t_table *table);
 void	init_mutexespt2(t_table *table);
+void	init_philos(t_table *table);
+void	init_threads(t_table *table);
+
 
 //error handling
 void	error_exit(int errnum, t_table *table);
