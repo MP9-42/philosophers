@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/23 14:38:55 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/23 16:29:51 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,10 @@ typedef struct s_philo
 	int						index;
 	long					last_meal_time;
 	struct s_table			*table;
-	t_mutex_wrapper			*left_fork;
-	t_mutex_wrapper			*right_fork;
+	t_mutex_wrapper			left_fork;
+	t_mutex_wrapper			right_fork;
 	pthread_t				thread;
 }							t_philo;
-
 
 typedef struct s_table
 {
@@ -50,7 +49,7 @@ typedef struct s_table
 	int					max_meal;
 	long				start_time;
 	int					stop;
-	t_mutex_wrapper		*forks;
+	pthread_mutex_t		*forks;
 	struct s_philo		*philos;
 	t_mutex_wrapper		print_mutex;
 	t_mutex_wrapper		stop_mutex;
@@ -65,7 +64,10 @@ void	kill_threads(t_table *table);
 // Parsing
 void	handle_input(t_table *table, char **input);
 void	check_input(char **input);
+
+// Initilization
 void	init_mutexes(t_table *table);
+void	init_mutexespt2(t_table *table);
 
 //error handling
 void	error_exit(int errnum, t_table *table);

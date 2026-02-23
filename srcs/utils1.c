@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:50:56 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/23 14:43:07 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/23 16:13:22 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ void	kill_threads(t_table *table)
 {
 	while ((table->size - 1) > 0)
 	{
-		if (table->forks[table->size - 1].initialized == 1
-			&& table->forks[table->size - 1].lock == 0)
-			pthread_mutex_destroy(&(table->forks[table->size - 1]));
+		pthread_mutex_destroy(&(table->forks[table->size - 1]));
 		table->size--;
 	}
 	if (table->print_mutex.initialized == 1 && table->print_mutex.lock == 0)
