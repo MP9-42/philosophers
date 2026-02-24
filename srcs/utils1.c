@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:50:56 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/23 16:13:22 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/24 14:25:14 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,3 +58,5 @@ void	kill_threads(t_table *table)
 	if (table->stop_mutex.initialized == 1 && table->stop_mutex.lock == 0)
 		pthread_mutex_destroy(&table->stop_mutex);
 }
+
+void	lock_mutex()

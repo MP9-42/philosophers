@@ -6,13 +6,13 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:38:31 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/23 17:11:21 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/24 13:15:09 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-void	check_input(char **input)
+static void	check_input(char **input)
 {
 	int	bi;
 	int	si;

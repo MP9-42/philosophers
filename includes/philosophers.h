@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/23 17:29:33 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/24 14:32:38 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,26 @@ typedef struct s_table
 }						t_table;
 
 // Utils
-long	philo_atoli(const char *str);
-void	free_all(t_table *table);
-void	kill_threads(t_table *table);
+long			philo_atoli(const char *str);
+void			free_all(t_table *table);
+void			kill_threads(t_table *table);
 
 // Parsing
-void	handle_input(t_table *table, char **input);
-void	check_input(char **input);
+void			handle_input(t_table *table, char **input);
+void			check_input(char **input);
 
 // Initilization
-void	init_mutexes(t_table *table);
-void	init_mutexespt2(t_table *table);
-void	init_philos(t_table *table);
-void	init_threads(t_table *table);
-
+void			init_mutexes(t_table *table);
+static void		init_mutexespt2(t_table *table);
+static void		init_philos(t_table *table);
+void			init_threads(t_table *table);
 
 //error handling
-void	error_exit(int errnum, t_table *table);
-void	error_exitpt2(int errnum, t_table *table);
-void	error_exitpt3(int errnum, t_table *table);
+void			error_exit(int errnum, t_table *table);
+void			error_exitpt2(int errnum, t_table *table);
+void			error_exitpt3(int errnum, t_table *table);
+
+// Routine
+void			*philo_routine(void *arg);
 
 #endif

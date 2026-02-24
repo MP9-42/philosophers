@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:01:29 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/23 17:35:05 by MP9              ###   ########.fr       */
+/*   Updated: 2026/02/24 14:31:54 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void	init_mutexes(t_table *table)
 		}
 		i++;
 	}
+	init_mutexespt2(table);
 }
 
-void	init_mutexespt2(t_table *table)
+static void	init_mutexespt2(t_table *table)
 {
 	if (pthread_mutex_init(&(table->print_mutex.mutex), NULL) != 0)
 		error_exitpt2(6, table);
@@ -47,7 +48,7 @@ void	init_mutexespt2(t_table *table)
 	table->stop_mutex.lock == 0;
 }
 
-void	init_philos(t_table *table)
+static void	init_philos(t_table *table)
 {
 	int				i;
 	struct timeval	tv;
@@ -74,13 +75,15 @@ void	init_philos(t_table *table)
 
 static void	init_threads(t_table *table)
 {
-	int	i;
+	int		i;
+	void	*gimmedat;
 
 	i = 0;
+	gimmedat = (void *)table;
 	while (i < table->size)
 	{
 		if (pthread_create(&(table->philos[i].thread), NULL,
-				routine, &table->philos[i]) != 0)
+				philo_routine, &table->philos[i]) != 0)
 			error_exitpt2(8, table);
 		if (table->philos[i].index % 2 == 0)
 			usleep(100);
