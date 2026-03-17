@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:50:56 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/24 14:25:14 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/17 21:14:07 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,20 @@ void	free_all(t_table *table)
 	free(table);
 }
 
-void	kill_threads(t_table *table)
+long	get_time(void)
 {
-	while ((table->size - 1) > 0)
-	{
-		pthread_mutex_destroy(&(table->forks[table->size - 1]));
-		table->size--;
-	}
-	if (table->print_mutex.initialized == 1 && table->print_mutex.lock == 0)
-		pthread_mutex_destroy(&table->print_mutex);
-	if (table->stop_mutex.initialized == 1 && table->stop_mutex.lock == 0)
-		pthread_mutex_destroy(&table->stop_mutex);
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	lock_mutex()
+int	simulation_stopped(t_table *table)
+{
+	int	stopped;
+
+	lock_mutex(&table->stop_mutex);
+	stopped = table->stop;
+	unlock_mutex(&table->stop_mutex);
+	return (stopped);
+}

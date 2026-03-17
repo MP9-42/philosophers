@@ -40,7 +40,7 @@ static int	format_specifier(const char *f, int i, va_list args)
 	if (c == 'd' || c == 'i')
 		return (ft_putnbr(va_arg(args, int)));
 	if (c == 'l' && f[++i] == 'd')
-		return(ft_putlong(va_arg(args, long)));
+		return (ft_putlong(va_arg(args, long)));
 	if (c == 'c')
 		return (ft_putchar(va_arg(args, int)));
 	if (c == 's')

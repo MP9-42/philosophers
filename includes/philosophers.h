@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/24 14:32:38 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/17 21:06:37 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_mutex_wrapper	t_mutex_wrapper;
 
 typedef struct s_mutex_wrapper
 {
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	*mutex;
 	int				initialized;
 	int				lock;
 }				t_mutex_wrapper;
@@ -67,8 +67,8 @@ void			check_input(char **input);
 
 // Initilization
 void			init_mutexes(t_table *table);
-static void		init_mutexespt2(t_table *table);
-static void		init_philos(t_table *table);
+void			init_mutexespt2(t_table *table);
+void			init_philos(t_table *table);
 void			init_threads(t_table *table);
 
 //error handling
@@ -78,5 +78,13 @@ void			error_exitpt3(int errnum, t_table *table);
 
 // Routine
 void			*philo_routine(void *arg);
+void			take_forks(t_philo *philo);
+void			eat(t_philo *philo);
+void			sleep_and_think(t_philo *philo);
+int				simulation_stopped(t_table *table);
+void			lock_mutex(t_mutex_wrapper *mutex_wrap);
+void			unlock_mutex(t_mutex_wrapper *mutex_wrap);
+long			get_time(void);
+void			kill_mutexes(t_table *table);
 
 #endif
