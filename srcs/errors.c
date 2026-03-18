@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:27:55 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 14:33:10 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 16:51:35 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	error_exit(int errnum, t_table *table)
 	else if (errnum == 3)
 	{
 		printf("Couldn't allocate memory for the forks!\n");
-		free(table);
+		free_all(table);
 		exit(3);
 	}
 	else

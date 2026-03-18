@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 12:39:42 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 14:33:46 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 16:13:30 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	*philo_routine(void *arg)
 	t_philo	*philos;
 
 	philos = (t_philo *)arg;
-	
-	while (!simulation_stopped(philos->table))
+	if (philos->table->start_lock.lock == 1)
+		return (NULL);
+	unlock_mutex(&philos->table->start_lock);
+	while (simulation_stopped(philos->table) != 1)
 	{
 		eat(philos);
 		sleep_and_think(philos);

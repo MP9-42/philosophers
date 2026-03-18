@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:50:56 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 12:32:00 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 16:55:26 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ long	philo_atoli(const char *str)
 
 void	free_all(t_table *table)
 {
+	if (table->start_lock.mutex)
+		free(table->start_lock.mutex);
 	if (table->stop_mutex.mutex)
 		free(table->stop_mutex.mutex);
 	if (table->print_mutex.mutex)
@@ -62,8 +64,8 @@ int	simulation_stopped(t_table *table)
 {
 	int	stopped;
 
-	lock_mutex(&table->stop_mutex);
-	stopped = table->stop;
-	unlock_mutex(&table->stop_mutex);
+	stopped = 0;
+	if (isend(table->philos) == 1)
+		stopped = 1;
 	return (stopped);
 }

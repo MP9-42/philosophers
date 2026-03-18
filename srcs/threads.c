@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:01:29 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 14:33:25 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 15:07:29 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	init_threads(t_table *table)
 			usleep(100);
 		i++;
 	}
+	unlock_mutex(&table->start_lock);
 }
 
 void	kill_threads(t_table *table)

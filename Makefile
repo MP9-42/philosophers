@@ -6,7 +6,7 @@
 #    By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/09 14:27:07 by MP9               #+#    #+#              #
-#    Updated: 2026/03/18 14:36:14 by MP9              ###   ########.fr        #
+#    Updated: 2026/03/18 14:41:53 by MP9              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ MAIN_DIR = objs
 
 PHILO_FILES =	srcs/errors.c srcs/main.c srcs/parsing.c srcs/threads.c \
 				srcs/utils1.c srcs/routine.c srcs/mutexes.c srcs/routine_utils.c \
+				srcs/utils2.c \
 
 OBJS = $(PHILO_FILES:srcs/%.c=$(MAIN_DIR)/%.o)
 

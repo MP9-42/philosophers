@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 19:49:46 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 14:33:57 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 16:53:28 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@ void	init_mutexespt2(t_table *table)
 		error_exitpt2(7, table);
 	table->stop_mutex.initialized = 1;
 	table->stop_mutex.lock = 0;
+	table->start_lock.mutex = malloc(sizeof(pthread_mutex_t));
+	if (!table->start_lock.mutex)
+		error_exitpt2(5, table);
+	if (pthread_mutex_init(table->start_lock.mutex, NULL) != 0)
+		error_exitpt2(9, table);
+	table->start_lock.initialized = 1;
+	lock_mutex(&table->start_lock);
+	table->start_lock.lock = 1;
 }
 
 void	kill_mutexes(t_table *table)
@@ -61,15 +69,11 @@ void	kill_mutexes(t_table *table)
 		table->size--;
 	}
 	if (table->print_mutex.initialized == 1)
-	{
 		pthread_mutex_destroy(table->print_mutex.mutex);
-		free(table->print_mutex.mutex);
-	}
 	if (table->stop_mutex.initialized == 1)
-	{
 		pthread_mutex_destroy(table->stop_mutex.mutex);
-		free(table->stop_mutex.mutex);
-	}
+	if (table->start_lock.initialized == 1)
+		pthread_mutex_destroy(table->start_lock.mutex);
 }
 
 void	lock_mutex(t_mutex_wrapper *mutex_wrap)

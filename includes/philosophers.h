@@ -6,13 +6,12 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 14:37:30 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 16:09:01 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
-
 
 # include <pthread.h>
 # include <stdio.h>
@@ -50,12 +49,13 @@ typedef struct s_table
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					max_meal;
-	long				start_time;
 	int					stop;
-	pthread_mutex_t		*forks;
+	long				start_time;
 	struct s_philo		*philos;
 	t_mutex_wrapper		print_mutex;
 	t_mutex_wrapper		stop_mutex;
+	t_mutex_wrapper		start_lock;
+	pthread_mutex_t		*forks;
 	pthread_t			monitor;	
 }						t_table;
 
@@ -65,7 +65,7 @@ void			free_all(t_table *table);
 void			kill_threads(t_table *table);
 void			uneven_forks(t_philo *philo);
 void			even_forks(t_philo *philo);
-
+int				ft_isdigit(char c);
 
 // Parsing
 t_table			*handle_input(char **input);
@@ -92,5 +92,8 @@ void			lock_mutex(t_mutex_wrapper *mutex_wrap);
 void			unlock_mutex(t_mutex_wrapper *mutex_wrap);
 long			get_time(void);
 void			kill_mutexes(t_table *table);
+int				isend(t_philo *philo);
+
+
 
 #endif
