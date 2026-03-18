@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:38:31 by MP9               #+#    #+#             */
-/*   Updated: 2026/02/24 14:54:28 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 12:44:41 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,8 @@ void	check_input(char **input)
 		error_exit(0, NULL);
 }
 
-void	handle_input(t_table *table, char **input)
+void	short_stuff(t_table *table, char **input)
 {
-	check_input(input);
-	table = malloc(sizeof(t_table) * 1);
-	if (!table)
-		error_exit(2, table);
 	table->size = philo_atoli(input[0]);
 	table->time_to_die = philo_atoli(input[1]) * 1000;
 	table->time_to_eat = philo_atoli(input[2]) * 1000;
@@ -57,5 +53,20 @@ void	handle_input(t_table *table, char **input)
 	table->philos = malloc(sizeof(t_philo) * table->size);
 	if (!table->philos)
 		error_exit(4, table);
+	table->print_mutex.mutex = malloc(sizeof(pthread_mutex_t));
+	if (!table->print_mutex.mutex)
+		error_exit(5, table);
+}
+
+t_table	*handle_input(char **input)
+{
+	t_table	*table;
+
+	table = malloc(sizeof(t_table) * 1);
+	if (!table)
+		error_exit(2, table);
+	check_input(input);
+	short_stuff(table, input);
 	init_mutexes(table);
+	return (table);
 }

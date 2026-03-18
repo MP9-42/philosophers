@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/17 21:06:37 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 14:37:30 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 # define PHILOSOPHERS_H
 
 
-# include "../libft/libft.h"
 # include <pthread.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
 # include <sys/time.h> 
+# include <limits.h>
 
 typedef struct s_philo			t_philo;
 typedef struct s_table			t_table;
@@ -60,9 +63,12 @@ typedef struct s_table
 long			philo_atoli(const char *str);
 void			free_all(t_table *table);
 void			kill_threads(t_table *table);
+void			uneven_forks(t_philo *philo);
+void			even_forks(t_philo *philo);
+
 
 // Parsing
-void			handle_input(t_table *table, char **input);
+t_table			*handle_input(char **input);
 void			check_input(char **input);
 
 // Initilization

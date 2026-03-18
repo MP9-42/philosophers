@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:01:29 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/17 21:15:50 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 14:33:25 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	kill_threads(t_table *table)
 	while (i < table->size)
 	{
 		if (pthread_join(table->philos[i].thread, NULL) != 0)
-			ft_printf("Error: failed to join thread %d\n", i);
+			printf("Error: failed to join thread %d\n", i);
 		i++;
 	}
 	kill_mutexes(table);
@@ -71,6 +71,6 @@ void	kill_threads(t_table *table)
 void	unlock_mutex(t_mutex_wrapper *mutex_wrap)
 {
 	if (pthread_mutex_unlock(mutex_wrap->mutex) != 0)
-		ft_printf("Error unlocking mutex\n");
+		printf("Error unlocking mutex\n");
 	mutex_wrap->lock = 0;
 }

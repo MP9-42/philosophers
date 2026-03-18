@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 19:49:46 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/17 21:08:22 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/18 14:33:57 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ void	init_mutexes(t_table *table)
 	int					i;
 
 	i = 0;
+	table->stop_mutex.mutex = malloc(sizeof(pthread_mutex_t));
+	if (!table->stop_mutex.mutex)
+		error_exit(5, table);
 	if (table->time_to_sleep < 60000 || table->time_to_die < 60000
 		|| table->time_to_eat < 60000)
 		error_exit(5, table);
@@ -33,6 +36,8 @@ void	init_mutexes(t_table *table)
 		}
 		i++;
 	}
+	table->print_mutex.initialized = 0;
+	table->stop_mutex.initialized = 0;
 	init_mutexespt2(table);
 }
 
@@ -55,15 +60,21 @@ void	kill_mutexes(t_table *table)
 		pthread_mutex_destroy(&(table->forks[table->size - 1]));
 		table->size--;
 	}
-	if (table->print_mutex.initialized == 1 && table->print_mutex.lock == 0)
+	if (table->print_mutex.initialized == 1)
+	{
 		pthread_mutex_destroy(table->print_mutex.mutex);
-	if (table->stop_mutex.initialized == 1 && table->stop_mutex.lock == 0)
+		free(table->print_mutex.mutex);
+	}
+	if (table->stop_mutex.initialized == 1)
+	{
 		pthread_mutex_destroy(table->stop_mutex.mutex);
+		free(table->stop_mutex.mutex);
+	}
 }
 
 void	lock_mutex(t_mutex_wrapper *mutex_wrap)
 {
 	if (pthread_mutex_lock(mutex_wrap->mutex) != 0)
-		ft_printf("Error locking mutex\n");
+		printf("Error locking mutex\n");
 	mutex_wrap->lock = 1;
 }
