@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 16:09:01 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/22 16:24:37 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_philo
 {
 	int						meals_eaten;
 	int						index;
-	long					last_meal_time;
+	unsigned long			last_meal_time;
 	struct s_table			*table;
 	t_mutex_wrapper			left_fork;
 	t_mutex_wrapper			right_fork;
@@ -49,14 +49,14 @@ typedef struct s_table
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					max_meal;
-	int					stop;
-	long				start_time;
+	volatile int		stop;
+	unsigned long		start_time;
 	struct s_philo		*philos;
 	t_mutex_wrapper		print_mutex;
 	t_mutex_wrapper		stop_mutex;
 	t_mutex_wrapper		start_lock;
 	pthread_mutex_t		*forks;
-	pthread_t			monitor;	
+	pthread_t			monitor;
 }						t_table;
 
 // Utils
@@ -90,10 +90,11 @@ void			sleep_and_think(t_philo *philo);
 int				simulation_stopped(t_table *table);
 void			lock_mutex(t_mutex_wrapper *mutex_wrap);
 void			unlock_mutex(t_mutex_wrapper *mutex_wrap);
-long			get_time(void);
+unsigned long	get_time(void);
 void			kill_mutexes(t_table *table);
 int				isend(t_philo *philo);
-
-
+void			*monitoring_routine(void *arg);
+void			edge_case(t_philo *philo);
+int				mutex_timedlock(t_mutex_wrapper *mutex, int timeout_ms);
 
 #endif

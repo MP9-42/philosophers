@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:50:56 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 16:55:26 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/22 17:47:56 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,28 @@ void	free_all(t_table *table)
 	free(table);
 }
 
-long	get_time(void)
+unsigned long	get_time(void)
 {
-	struct timeval	tv;
+	struct timeval		tv;
+	unsigned long		time;
 
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time);
 }
 
 int	simulation_stopped(t_table *table)
 {
-	int	stopped;
+	int				i;
 
-	stopped = 0;
-	if (isend(table->philos) == 1)
-		stopped = 1;
-	return (stopped);
+	i = 0;
+	while (i < table->size)
+	{
+		if (isend(&table->philos[i]) == 1)
+		{
+			break ;
+		}
+		i++;
+	}
+	return (table->stop_mutex.lock);
 }

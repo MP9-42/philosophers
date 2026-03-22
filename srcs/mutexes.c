@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 19:49:46 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 16:53:28 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/22 16:56:55 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void	init_mutexes(t_table *table)
 {
-	int					i;
+	int	i;
 
 	i = 0;
 	table->stop_mutex.mutex = malloc(sizeof(pthread_mutex_t));
 	if (!table->stop_mutex.mutex)
 		error_exit(5, table);
-	if (table->time_to_sleep < 60000 || table->time_to_die < 60000
-		|| table->time_to_eat < 60000)
-		error_exit(5, table);
+	// if (table->time_to_sleep < 60000 || table->time_to_die < 60000
+	// 	|| table->time_to_eat < 60000)
+	// 	error_exit(5, table);
 	while (i < table->size)
 	{
 		if (pthread_mutex_init(&(table->forks[i]), NULL) != 0)
@@ -63,10 +63,13 @@ void	init_mutexespt2(t_table *table)
 
 void	kill_mutexes(t_table *table)
 {
-	while ((table->size - 1) > 0)
+	int	size;
+
+	size = table->size - 1;
+	while (size > 0)
 	{
 		pthread_mutex_destroy(&(table->forks[table->size - 1]));
-		table->size--;
+		size--;
 	}
 	if (table->print_mutex.initialized == 1)
 		pthread_mutex_destroy(table->print_mutex.mutex);

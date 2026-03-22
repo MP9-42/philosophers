@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:01:29 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 15:07:29 by MP9              ###   ########.fr       */
+/*   Updated: 2026/03/22 16:23:33 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ void	init_threads(t_table *table)
 		if (pthread_create(&(table->philos[i].thread), NULL,
 				philo_routine, &table->philos[i]) != 0)
 			error_exitpt2(8, table);
-		if (table->philos[i].index % 2 == 0)
-			usleep(100);
+		if (pthread_create(&(table->monitor), NULL,
+				monitoring_routine, table) != 0)
+			error_exitpt2(8, table);
 		i++;
 	}
 	unlock_mutex(&table->start_lock);
