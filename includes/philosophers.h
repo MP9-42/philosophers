@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/22 16:24:37 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/09 21:31:07 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,11 @@ void			eat(t_philo *philo);
 void			sleep_and_think(t_philo *philo);
 int				simulation_stopped(t_table *table);
 void			lock_mutex(t_mutex_wrapper *mutex_wrap);
-void			unlock_mutex(t_mutex_wrapper *mutex_wrap);
+int				unlock_mutex(t_mutex_wrapper *mutex_wrap);
 unsigned long	get_time(void);
 void			kill_mutexes(t_table *table);
 int				isend(t_philo *philo);
+void			isend_helper(t_philo *philo, long elapsed_time);
 void			*monitoring_routine(void *arg);
 void			edge_case(t_philo *philo);
 int				mutex_timedlock(t_mutex_wrapper *mutex, int timeout_ms);

@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 19:49:46 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/22 16:56:55 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/01 19:27:13 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,16 @@ void	kill_mutexes(t_table *table)
 
 void	lock_mutex(t_mutex_wrapper *mutex_wrap)
 {
-	if (pthread_mutex_lock(mutex_wrap->mutex) != 0)
-		printf("Error locking mutex\n");
+	int rv;
+	if (!mutex_wrap || !mutex_wrap->mutex)
+	{
+		printf("Error locking mutex: NULL wrapper or NULL mutex (wrapper=%p mutex=%p)\n",
+			(void *)mutex_wrap, (void *)(mutex_wrap ? mutex_wrap->mutex : NULL));
+		return;
+	}
+	rv = pthread_mutex_lock(mutex_wrap->mutex);
+	if (rv != 0)
+		printf("Error locking mutex at %p (initialized=%d lock=%d) rv=%d\n",
+			(void *)mutex_wrap->mutex, mutex_wrap->initialized, mutex_wrap->lock, rv);
 	mutex_wrap->lock = 1;
 }

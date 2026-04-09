@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:38:31 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/22 13:11:24 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/01 19:07:35 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	check_input(char **input)
 void	short_stuff(t_table *table, char **input)
 {
 	table->size = philo_atoli(input[0]);
-	table->time_to_die = philo_atoli(input[1]) * 1000;
-	table->time_to_eat = philo_atoli(input[2]) * 1000;
-	table->time_to_sleep = philo_atoli(input[3]) * 1000;
+	table->time_to_die = philo_atoli(input[1]);
+	table->time_to_eat = philo_atoli(input[2]);
+	table->time_to_sleep = philo_atoli(input[3]);
 	if (input[4])
 		table->max_meal = philo_atoli(input[4]);
 	else

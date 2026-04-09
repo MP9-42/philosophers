@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:50:56 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/22 17:47:56 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/01 19:07:59 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,7 @@ int	simulation_stopped(t_table *table)
 	while (i < table->size)
 	{
 		if (isend(&table->philos[i]) == 1)
-		{
 			break ;
-		}
 		i++;
 	}
 	return (table->stop_mutex.lock);

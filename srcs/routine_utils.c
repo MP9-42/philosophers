@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 13:03:57 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/22 17:54:05 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/09 22:04:17 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,33 @@ void	even_forks(t_philo *philo)
 	printf("%ld %d has taken a fork\n",
 		get_time() - philo->table->start_time, philo->index + 1);
 	unlock_mutex(&philo->table->print_mutex);
+	if (get_time() - philo->last_meal_time
+		>= (unsigned long)philo->table->time_to_die)
+	{
+		unlock_mutex(&philo->right_fork);
+		return ;
+	}
 	lock_mutex(&philo->left_fork);
 	lock_mutex(&philo->table->print_mutex);
 	printf("%ld %d has taken a fork\n",
 		get_time() - philo->table->start_time, philo->index + 1);
 	unlock_mutex(&philo->table->print_mutex);
+	if (get_time() - philo->last_meal_time
+		>= (unsigned long)philo->table->time_to_die)
+	{
+		unlock_mutex(&philo->left_fork);
+		unlock_mutex(&philo->right_fork);
+		return ;
+	}
 	lock_mutex(&philo->table->print_mutex);
 	printf("%ld %d is eating\n",
 		get_time() - philo->table->start_time, philo->index + 1);
 	unlock_mutex(&philo->table->print_mutex);
-	usleep(philo->table->time_to_eat);
+	philo->last_meal_time = get_time();
+	philo->meals_eaten++;
+	usleep(philo->table->time_to_eat * 1000);
+	unlock_mutex(&philo->left_fork);
+	unlock_mutex(&philo->right_fork);
 }
 
 void	uneven_forks(t_philo *philo)
@@ -38,16 +55,33 @@ void	uneven_forks(t_philo *philo)
 	printf("%ld %d has taken a fork\n",
 		get_time() - philo->table->start_time, philo->index + 1);
 	unlock_mutex(&philo->table->print_mutex);
+	if (get_time() - philo->last_meal_time
+		>= (unsigned long)philo->table->time_to_die)
+	{
+		unlock_mutex(&philo->left_fork);
+		return ;
+	}
 	lock_mutex(&philo->right_fork);
 	lock_mutex(&philo->table->print_mutex);
 	printf("%ld %d has taken a fork\n",
 		get_time() - philo->table->start_time, philo->index + 1);
 	unlock_mutex(&philo->table->print_mutex);
+	if (get_time() - philo->last_meal_time
+		>= (unsigned long)philo->table->time_to_die)
+	{
+		unlock_mutex(&philo->right_fork);
+		unlock_mutex(&philo->left_fork);
+		return ;
+	}
 	lock_mutex(&philo->table->print_mutex);
 	printf("%ld %d is eating\n",
 		get_time() - philo->table->start_time, philo->index + 1);
 	unlock_mutex(&philo->table->print_mutex);
-	usleep(philo->table->time_to_eat);
+	philo->last_meal_time = get_time();
+	philo->meals_eaten++;
+	usleep(philo->table->time_to_eat * 1000);
+	unlock_mutex(&philo->right_fork);
+	unlock_mutex(&philo->left_fork);
 }
 
 int	mutex_timedlock(t_mutex_wrapper *mutex, int timeout_ms)
@@ -75,7 +109,7 @@ void	edge_case(t_philo *philo)
 	printf("%ld %d has taken a fork\n",
 		get_time() - philo->table->start_time, philo->index + 1);
 	unlock_mutex(&philo->table->print_mutex);
-	usleep(philo->table->time_to_die);
+	usleep(philo->table->time_to_die * 1000);
 	lock_mutex(&philo->table->print_mutex);
 	printf("%ld %d has died!\n", get_time() - philo->table->start_time,
 		philo->index + 1);

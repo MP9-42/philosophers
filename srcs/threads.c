@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:01:29 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/22 16:23:33 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/09 21:44:45 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,12 @@ void	init_threads(t_table *table)
 		if (pthread_create(&(table->philos[i].thread), NULL,
 				philo_routine, &table->philos[i]) != 0)
 			error_exitpt2(8, table);
-		if (pthread_create(&(table->monitor), NULL,
-				monitoring_routine, table) != 0)
-			error_exitpt2(8, table);
+		usleep(100);
 		i++;
 	}
+	if (pthread_create(&(table->monitor), NULL,
+			monitoring_routine, table) != 0)
+		error_exitpt2(8, table);
 	unlock_mutex(&table->start_lock);
 }
 
@@ -63,16 +64,22 @@ void	kill_threads(t_table *table)
 	i = 0;
 	while (i < table->size)
 	{
-		if (pthread_join(table->philos[i].thread, NULL) != 0)
-			printf("Error: failed to join thread %d\n", i);
+		if (pthread_join(table->philos[i].thread, NULL))
+			printf("Error: failed to join philosopher thread\n");
 		i++;
 	}
+	if (pthread_join(table->monitor, NULL) != 0)
+		printf("Error: failed to join monitor thread\n");
 	kill_mutexes(table);
 }
 
-void	unlock_mutex(t_mutex_wrapper *mutex_wrap)
+int	unlock_mutex(t_mutex_wrapper *mutex_wrap)
 {
 	if (pthread_mutex_unlock(mutex_wrap->mutex) != 0)
-		printf("Error unlocking mutex\n");
+	{
+		printf("Error: failed to unlock mutex\n");
+		return (1);
+	}
 	mutex_wrap->lock = 0;
+	return (0);
 }
