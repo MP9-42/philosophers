@@ -6,46 +6,45 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 12:39:42 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/09 22:04:17 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/20 00:00:00 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
+static void	wait_time(t_table *table, int duration)
+{
+	unsigned long	start;
+
+	start = get_time();
+	while (simulation_stopped(table) == 0)
+	{
+		if (get_time() - start >= (unsigned long)duration)
+			break ;
+		usleep(500);
+	}
+}
+
 void	*philo_routine(void *arg)
 {
-	t_philo	*philos;
+	t_philo	*philo;
 
-	philos = (t_philo *)arg;
-	if (philos->table->size == 1)
-		edge_case(philos);
-	lock_mutex(&philos->table->start_lock);
-	unlock_mutex(&philos->table->start_lock);
-	philos->last_meal_time = get_time();
-	while (philos->table->stop == 0)
+	philo = (t_philo *)arg;
+	lock_mutex(&philo->table->start_lock);
+	unlock_mutex(&philo->table->start_lock);
+	lock_mutex(&philo->table->stop_mutex);
+	philo->last_meal_time = get_time();
+	unlock_mutex(&philo->table->stop_mutex);
+	if (philo->table->size == 1)
+		return (edge_case(philo), NULL);
+	if (philo->index % 2 == 0)
+		wait_time(philo->table, philo->table->time_to_eat / 2);
+	while (simulation_stopped(philo->table) == 0)
 	{
-		if (get_time() - philos->last_meal_time
-			>= (unsigned long)philos->table->time_to_die)
-		{
-			lock_mutex(&philos->table->stop_mutex);
-			lock_mutex(&philos->table->print_mutex);
-			printf("%ld %d has died!\n",
-				get_time() - philos->table->start_time, philos->index + 1);
-			unlock_mutex(&philos->table->print_mutex);
-			philos->table->stop = 1;
-			unlock_mutex(&philos->table->stop_mutex);
+		eat(philo);
+		if (simulation_stopped(philo->table) == 1)
 			break ;
-		}
-		eat(philos);
-		if (philos->table->max_meal > 0
-			&& philos->meals_eaten >= philos->table->max_meal)
-		{
-			lock_mutex(&philos->table->stop_mutex);
-			philos->table->stop = 1;
-			unlock_mutex(&philos->table->stop_mutex);
-			break ;
-		}
-		sleep_and_think(philos);
+		sleep_and_think(philo);
 	}
 	return (NULL);
 }
@@ -61,27 +60,30 @@ void	take_forks(t_philo *philo)
 void	eat(t_philo *philo)
 {
 	take_forks(philo);
+	if (simulation_stopped(philo->table) == 1
+		|| print_state(philo, "is eating") == 0)
+	{
+		if (philo->left_fork.lock == 1)
+			unlock_mutex(&philo->left_fork);
+		if (philo->right_fork.lock == 1)
+			unlock_mutex(&philo->right_fork);
+		return ;
+	}
+	lock_mutex(&philo->table->stop_mutex);
+	philo->last_meal_time = get_time();
+	philo->meals_eaten++;
+	unlock_mutex(&philo->table->stop_mutex);
+	wait_time(philo->table, philo->table->time_to_eat);
+	unlock_mutex(&philo->right_fork);
+	unlock_mutex(&philo->left_fork);
 }
 
 void	sleep_and_think(t_philo *philo)
 {
-	unsigned long	start_sleep;
-
-	start_sleep = get_time();
-	while (get_time() - start_sleep
-		< (unsigned long)philo->table->time_to_sleep)
-	{
-		if (get_time() - philo->last_meal_time
-			>= (unsigned long)philo->table->time_to_die)
-			return ;
-		usleep(100);
-	}
-	if (get_time() - philo->last_meal_time
-		< (unsigned long)philo->table->time_to_die)
-	{
-		lock_mutex(&philo->table->print_mutex);
-		printf("%ld %d is thinking\n",
-			get_time() - philo->table->start_time, philo->index + 1);
-		unlock_mutex(&philo->table->print_mutex);
-	}
+	if (print_state(philo, "is sleeping") == 0)
+		return ;
+	wait_time(philo->table, philo->table->time_to_sleep);
+	if (philo->table->size % 2 != 0)
+		wait_time(philo->table, philo->table->time_to_eat / 2);
+	print_state(philo, "is thinking");
 }
