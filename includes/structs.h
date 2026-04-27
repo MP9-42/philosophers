@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 16:43:04 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/27 19:08:09 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 22:52:50 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_fork			t_fork;
 
 typedef struct s_fork
 {
-	pthread_mutex_t	fork;
+	pthread_mutex_t	*fork;
 	bool			taken;
 }					t_fork;
 
@@ -32,10 +32,10 @@ typedef struct s_philo
 	int				meals_eaten;
 	int				index;
 	int				time_sleeping;
-	int				time_thinking;
+	int				sthinking;
 	unsigned long	last_meal_time;
-	t_fork		*left_fork;
-	t_fork		*right_fork;
+	t_fork			left_fork;
+	t_fork			right_fork;
 	t_table			*table;
 	pthread_t		thread;
 	bool			isdead;
@@ -50,7 +50,7 @@ typedef struct s_table
 	int				time_to_eat;
 	int				size;
 	int				max_meal;
-	bool			stop;
+	volatile __sig_atomic_t stop;
 	t_philo			*philos;
 	t_fork			*forks;
 	pthread_mutex_t	*print_mutex;

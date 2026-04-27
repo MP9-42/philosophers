@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 14:37:45 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/27 18:23:46 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 23:06:35 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ int	isend(t_philo *philo)
 	if (philo->table->max_meal > 0
 		&& philo->meals_eaten >= philo->table->max_meal)
 	{
-		print_state(philo, "has eaten all meals!");
+		philo->table->stop = true;
 		pthread_mutex_unlock(philo->table->stop_mutex);
+		print_state(philo, "has eaten all meals!");
 		return (1);
 	}
-	if (elapsed_time > philo->table->time_to_die)
+	if (elapsed_time > philo->table->time_to_die - 1)
 	{
 		philo->table->stop = true;
 		pthread_mutex_unlock(philo->table->stop_mutex);
@@ -52,7 +53,8 @@ void	*monitoring_routine(void *arg)
 	int		i;
 
 	table = (t_table *)arg;
-	while (!simulation_stopped(table))
+	
+	while (1)
 	{
 		i = 0;
 		while (i < table->size && !simulation_stopped(table))
@@ -61,7 +63,7 @@ void	*monitoring_routine(void *arg)
 				return (NULL);
 			i++;
 		}
-		usleep(750);
+		usleep(1200);
 	}
 	return (NULL);
 }

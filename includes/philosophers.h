@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/27 18:53:13 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 23:19:43 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void			uneven_forks(t_philo *philo);
 void			even_forks(t_philo *philo);
 int				print_state(t_philo *philo, char *msg);
 int				ft_isdigit(char c);
-void			wait_time(t_table *table, int duration);
+unsigned int	wait_time(t_table *table, int duration);
 
 // Parsing
 t_table			*handle_input(char **input);
@@ -51,8 +51,8 @@ void			error_exitpt3(int errnum, t_table *table);
 // Routine
 void			*philo_routine(void *arg);
 void			take_forks(t_philo *philo);
-void			eat(t_philo *philo);
-void			sleep_and_think(t_philo *philo);
+int				eat(t_philo *philo);
+int				sleep_and_think(t_philo *philo);
 bool			simulation_stopped(t_table *table);
 unsigned long	get_time(void);
 void			kill_mutexes(t_table *table);

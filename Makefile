@@ -6,7 +6,7 @@
 #    By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/09 14:27:07 by MP9               #+#    #+#              #
-#    Updated: 2026/04/27 14:13:18 by MP9              ###   ########.fr        #
+#    Updated: 2026/04/27 20:34:54 by MP9              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ PHILO_FILES =	srcs/errors.c srcs/main.c srcs/parsing.c srcs/threads.c \
 OBJS = $(PHILO_FILES:srcs/%.c=$(MAIN_DIR)/%.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes/ -I./libft/includes/ \
+CFLAGS = -Wall -Wextra -Werror -I./includes/ \
 
 all : $(NAME)
 
