@@ -6,11 +6,11 @@
 #    By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/09 14:27:07 by MP9               #+#    #+#              #
-#    Updated: 2026/03/18 14:41:53 by MP9              ###   ########.fr        #
+#    Updated: 2026/04/27 14:13:18 by MP9              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philosophers
+NAME = philo
 
 MAIN_DIR = objs
 

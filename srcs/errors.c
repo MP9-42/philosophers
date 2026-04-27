@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:27:55 by MP9               #+#    #+#             */
-/*   Updated: 2026/03/18 16:51:35 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 14:54:41 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	error_exit(int errnum, t_table *table)
 {
 	if (errnum == 0)
 	{
-		printf("Wrong user input!\nUsage: ./philosophers <num_of_philos>");
+		printf("Wrong user input!\nUsage: ./philo <num_of_philos> ");
 		printf("<time_to_die> <time_to_eat> <time_to_sleep> ");
 		printf("[optional: num of meals]\n");
 		exit(0);

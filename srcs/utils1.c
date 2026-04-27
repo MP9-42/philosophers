@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:50:56 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/01 19:07:59 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 18:45:42 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ long	philo_atoli(const char *str)
 
 void	free_all(t_table *table)
 {
-	if (table->start_lock.mutex)
-		free(table->start_lock.mutex);
-	if (table->stop_mutex.mutex)
-		free(table->stop_mutex.mutex);
-	if (table->print_mutex.mutex)
-		free(table->print_mutex.mutex);
+	if (table->start_lock)
+		free(table->start_lock);
+	if (table->stop_mutex)
+		free(table->stop_mutex);
+	if (table->print_mutex)
+		free(table->print_mutex);
 	if (table->philos)
 		free(table->philos);
 	if (table->forks)
@@ -62,16 +62,14 @@ unsigned long	get_time(void)
 	return (time);
 }
 
-int	simulation_stopped(t_table *table)
+bool	simulation_stopped(t_table *table)
 {
-	int				i;
-
-	i = 0;
-	while (i < table->size)
+	pthread_mutex_lock(table->stop_mutex);
+	if (table->stop == true)
 	{
-		if (isend(&table->philos[i]) == 1)
-			break ;
-		i++;
+		pthread_mutex_unlock(table->stop_mutex);
+		return (true);
 	}
-	return (table->stop_mutex.lock);
+	pthread_mutex_unlock(table->stop_mutex);
+	return (false);
 }

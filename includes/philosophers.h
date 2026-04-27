@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/09 21:31:07 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 18:53:13 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,49 +15,13 @@
 
 # include <pthread.h>
 # include <stdio.h>
+# include "structs.h"
 # include <unistd.h>
+# include <stdbool.h>
 # include <stdlib.h>
 # include <sys/time.h> 
 # include <limits.h>
 
-typedef struct s_philo			t_philo;
-typedef struct s_table			t_table;
-typedef struct s_mutex_wrapper	t_mutex_wrapper;
-
-typedef struct s_mutex_wrapper
-{
-	pthread_mutex_t	*mutex;
-	int				initialized;
-	int				lock;
-}				t_mutex_wrapper;
-
-typedef struct s_philo
-{
-	int						meals_eaten;
-	int						index;
-	unsigned long			last_meal_time;
-	struct s_table			*table;
-	t_mutex_wrapper			left_fork;
-	t_mutex_wrapper			right_fork;
-	pthread_t				thread;
-}							t_philo;
-
-typedef struct s_table
-{
-	int					size;
-	int					time_to_die;
-	int					time_to_eat;
-	int					time_to_sleep;
-	int					max_meal;
-	volatile int		stop;
-	unsigned long		start_time;
-	struct s_philo		*philos;
-	t_mutex_wrapper		print_mutex;
-	t_mutex_wrapper		stop_mutex;
-	t_mutex_wrapper		start_lock;
-	pthread_mutex_t		*forks;
-	pthread_t			monitor;
-}						t_table;
 
 // Utils
 long			philo_atoli(const char *str);
@@ -65,7 +29,9 @@ void			free_all(t_table *table);
 void			kill_threads(t_table *table);
 void			uneven_forks(t_philo *philo);
 void			even_forks(t_philo *philo);
+int				print_state(t_philo *philo, char *msg);
 int				ft_isdigit(char c);
+void			wait_time(t_table *table, int duration);
 
 // Parsing
 t_table			*handle_input(char **input);
@@ -87,15 +53,13 @@ void			*philo_routine(void *arg);
 void			take_forks(t_philo *philo);
 void			eat(t_philo *philo);
 void			sleep_and_think(t_philo *philo);
-int				simulation_stopped(t_table *table);
-void			lock_mutex(t_mutex_wrapper *mutex_wrap);
-int				unlock_mutex(t_mutex_wrapper *mutex_wrap);
+bool			simulation_stopped(t_table *table);
 unsigned long	get_time(void);
 void			kill_mutexes(t_table *table);
 int				isend(t_philo *philo);
 void			isend_helper(t_philo *philo, long elapsed_time);
 void			*monitoring_routine(void *arg);
 void			edge_case(t_philo *philo);
-int				mutex_timedlock(t_mutex_wrapper *mutex, int timeout_ms);
+int				mutex_timedlock(pthread_mutex_t *mutex, int timeout_ms);
 
 #endif

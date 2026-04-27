@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:38:31 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/01 19:07:35 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 14:11:18 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,21 @@ void	short_stuff(t_table *table, char **input)
 		table->max_meal = philo_atoli(input[4]);
 	else
 		table->max_meal = 0;
-	table->stop = 0;
-	table->forks = malloc(sizeof(pthread_mutex_t) * table->size);
+	table->stop = false;
+	table->forks = malloc(sizeof(t_fork) * table->size);
 	if (!table->forks)
 		error_exit(3, table);
 	table->philos = malloc(sizeof(t_philo) * table->size);
 	if (!table->philos)
 		error_exit(4, table);
-	table->print_mutex.mutex = malloc(sizeof(pthread_mutex_t));
-	if (!table->print_mutex.mutex)
+	table->print_mutex = malloc(sizeof(pthread_mutex_t));
+	if (!table->print_mutex)
+		error_exit(5, table);
+	table->stop_mutex = malloc(sizeof(pthread_mutex_t));
+	if (!table->stop_mutex)
+		error_exit(5, table);
+	table->start_lock = malloc(sizeof(pthread_mutex_t));
+	if (!table->start_lock)
 		error_exit(5, table);
 }
 

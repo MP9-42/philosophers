@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 19:49:46 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/01 19:27:13 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 14:34:43 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,80 +17,54 @@ void	init_mutexes(t_table *table)
 	int	i;
 
 	i = 0;
-	table->stop_mutex.mutex = malloc(sizeof(pthread_mutex_t));
-	if (!table->stop_mutex.mutex)
+	table->stop_mutex = malloc(sizeof(pthread_mutex_t));
+	if (!table->stop_mutex)
 		error_exit(5, table);
-	// if (table->time_to_sleep < 60000 || table->time_to_die < 60000
-	// 	|| table->time_to_eat < 60000)
-	// 	error_exit(5, table);
 	while (i < table->size)
 	{
-		if (pthread_mutex_init(&(table->forks[i]), NULL) != 0)
+		if (pthread_mutex_init((&table->forks[i].fork), NULL) != 0)
 		{
 			while (i >= 0)
 			{
-				pthread_mutex_destroy(&(table->forks[i]));
+				pthread_mutex_destroy((&table->forks[i].fork));
 				i--;
 			}
 			error_exitpt2(5, table);
 		}
+		table->forks[i].taken = false;
 		i++;
 	}
-	table->print_mutex.initialized = 0;
-	table->stop_mutex.initialized = 0;
 	init_mutexespt2(table);
 }
 
 void	init_mutexespt2(t_table *table)
 {
-	if (pthread_mutex_init(table->print_mutex.mutex, NULL) != 0)
+	if (pthread_mutex_init(table->print_mutex, NULL) != 0)
 		error_exitpt2(6, table);
-	table->print_mutex.initialized = 1;
-	table->print_mutex.lock = 0;
-	if (pthread_mutex_init(table->stop_mutex.mutex, NULL) != 0)
+	if (pthread_mutex_init(table->stop_mutex, NULL) != 0)
 		error_exitpt2(7, table);
-	table->stop_mutex.initialized = 1;
-	table->stop_mutex.lock = 0;
-	table->start_lock.mutex = malloc(sizeof(pthread_mutex_t));
-	if (!table->start_lock.mutex)
+	table->start_lock = malloc(sizeof(pthread_mutex_t));
+	if (!table->start_lock)
 		error_exitpt2(5, table);
-	if (pthread_mutex_init(table->start_lock.mutex, NULL) != 0)
+	if (pthread_mutex_init(table->start_lock, NULL) != 0)
 		error_exitpt2(9, table);
-	table->start_lock.initialized = 1;
-	lock_mutex(&table->start_lock);
-	table->start_lock.lock = 1;
+	pthread_mutex_lock(table->start_lock);
 }
 
 void	kill_mutexes(t_table *table)
 {
-	int	size;
+	int	i;
 
-	size = table->size - 1;
-	while (size > 0)
+	i = 0;
+	while (i < table->size)
 	{
-		pthread_mutex_destroy(&(table->forks[table->size - 1]));
-		size--;
+		pthread_mutex_destroy((&table->forks[i].fork));
+		i++;
 	}
-	if (table->print_mutex.initialized == 1)
-		pthread_mutex_destroy(table->print_mutex.mutex);
-	if (table->stop_mutex.initialized == 1)
-		pthread_mutex_destroy(table->stop_mutex.mutex);
-	if (table->start_lock.initialized == 1)
-		pthread_mutex_destroy(table->start_lock.mutex);
-}
-
-void	lock_mutex(t_mutex_wrapper *mutex_wrap)
-{
-	int rv;
-	if (!mutex_wrap || !mutex_wrap->mutex)
-	{
-		printf("Error locking mutex: NULL wrapper or NULL mutex (wrapper=%p mutex=%p)\n",
-			(void *)mutex_wrap, (void *)(mutex_wrap ? mutex_wrap->mutex : NULL));
-		return;
-	}
-	rv = pthread_mutex_lock(mutex_wrap->mutex);
-	if (rv != 0)
-		printf("Error locking mutex at %p (initialized=%d lock=%d) rv=%d\n",
-			(void *)mutex_wrap->mutex, mutex_wrap->initialized, mutex_wrap->lock, rv);
-	mutex_wrap->lock = 1;
+	if (table->print_mutex)
+		pthread_mutex_destroy(table->print_mutex);
+	if (table->stop_mutex)
+		pthread_mutex_destroy(table->stop_mutex);
+	if (table->start_lock)
+		pthread_mutex_destroy(table->start_lock);
 }

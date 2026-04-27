@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:01:29 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/09 21:44:45 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 19:08:09 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,8 @@ void	init_philos(t_table *table)
 		table->philos[i].last_meal_time = table->start_time;
 		table->philos[i].meals_eaten = 0;
 		table->philos[i].table = table;
-		table->philos[i].left_fork.mutex = &table->forks[i];
-		table->philos[i].left_fork.initialized = 1;
-		table->philos[i].left_fork.lock = 0;
-		table->philos[i].right_fork.mutex
-			= &table->forks[(i + 1) % table->size];
-		table->philos[i].right_fork.initialized = 1;
-		table->philos[i].right_fork.lock = 0;
+		table->philos[i].left_fork = &table->forks[i];
+		table->philos[i].right_fork = &table->forks[(i + 1) % table->size];
 		i++;
 	}
 	init_threads(table);
@@ -54,7 +49,7 @@ void	init_threads(t_table *table)
 	if (pthread_create(&(table->monitor), NULL,
 			monitoring_routine, table) != 0)
 		error_exitpt2(8, table);
-	unlock_mutex(&table->start_lock);
+	pthread_mutex_unlock(table->start_lock);
 }
 
 void	kill_threads(t_table *table)
@@ -73,13 +68,22 @@ void	kill_threads(t_table *table)
 	kill_mutexes(table);
 }
 
-int	unlock_mutex(t_mutex_wrapper *mutex_wrap)
+int	print_state(t_philo *philo, char *msg)
 {
-	if (pthread_mutex_unlock(mutex_wrap->mutex) != 0)
+	pthread_mutex_lock(philo->table->stop_mutex);
+	pthread_mutex_lock(philo->table->print_mutex);
+	if (philo->table->stop)
 	{
-		printf("Error: failed to unlock mutex\n");
-		return (1);
+		if (philo->isdead)
+			printf("%ld %d %s\n", get_time() - philo->table->start_time,
+				philo->index + 1, msg);
+		pthread_mutex_unlock(philo->table->print_mutex);
+		pthread_mutex_unlock(philo->table->stop_mutex);
+		return (0);
 	}
-	mutex_wrap->lock = 0;
-	return (0);
+	printf("%ld %d %s\n", get_time() - philo->table->start_time,
+		philo->index + 1, msg);
+	pthread_mutex_unlock(philo->table->print_mutex);
+	pthread_mutex_unlock(philo->table->stop_mutex);
+	return (1);
 }
