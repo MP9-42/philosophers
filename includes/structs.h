@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 16:43:04 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/27 22:52:50 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 23:44:38 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ typedef struct s_philo
 {
 	int				meals_eaten;
 	int				index;
-	int				time_sleeping;
-	int				sthinking;
 	unsigned long	last_meal_time;
 	t_fork			left_fork;
 	t_fork			right_fork;

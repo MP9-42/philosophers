@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 12:39:42 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/27 23:19:09 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/27 23:52:45 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	*philo_routine(void *arg)
 		wait_time(philo->table, philo->table->time_to_eat / 2);
 	while (!simulation_stopped(philo->table) && !philo->isdead)
 	{
-		usleep(1000);
+		usleep(500);
 		if (eat(philo) == 0)
 			return(NULL);
 		if (sleep_and_think(philo) == 0)
@@ -62,11 +62,7 @@ void	take_forks(t_philo *philo)
 int	eat(t_philo *philo)
 {
 	if (simulation_stopped(philo->table) || philo->isdead)
-	{
-		pthread_mutex_unlock(philo->right_fork.fork);
-		pthread_mutex_unlock(philo->left_fork.fork);
 		return (0);
-	}
 	take_forks(philo);
 	if (print_state(philo, "is eating") == 0)
 		return(0);
@@ -86,9 +82,8 @@ int	sleep_and_think(t_philo *philo)
 		return (0);
 	if (print_state(philo, "is sleeping") == 0)
 		return(0);
-	philo->time_sleeping = wait_time(philo->table, philo->table->time_to_sleep);
+	wait_time(philo->table, philo->table->time_to_sleep);
 	if (print_state(philo, "is thinking") == 0)
 		return(0);
-	wait_time(philo->table, 1);
 	return(1);
 }
