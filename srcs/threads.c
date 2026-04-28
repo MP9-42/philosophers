@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:01:29 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/27 23:25:18 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/28 20:24:18 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,8 @@ void	init_threads(t_table *table)
 	while (i < table->size)
 	{
 		if (pthread_create(&(table->philos[i].thread), NULL, philo_routine,
-				&table->philos[i]) != 0)
+			&table->philos[i]) != 0)
 			error_exitpt2(8, table);
-		usleep(100);
 		i++;
 	}
 	if (pthread_create(&(table->monitor), NULL, monitoring_routine, table) != 0)
@@ -70,26 +69,17 @@ void	kill_threads(t_table *table)
 
 int	print_state(t_philo *philo, char *msg)
 {
-	pthread_mutex_lock(philo->table->stop_mutex);
 	pthread_mutex_lock(philo->table->print_mutex);
 	if (philo->table->stop)
 	{
-		if (philo->meals_eaten == philo->table->max_meal)
-			printf("%ld %d %s\n", get_time() - philo->table->start_time,
-				philo->index + 1, "has eaten all meals!");
-		else if (philo->isdead)
-			printf("%ld %d %s\n", get_time() - philo->table->start_time,
-				philo->index + 1, "has died!");
 		pthread_mutex_unlock(philo->table->print_mutex);
-		pthread_mutex_unlock(philo->table->stop_mutex);
-		return (0);
+		return (0);		
 	}
 	else
 	{
 		printf("%ld %d %s\n", get_time() - philo->table->start_time,
 			philo->index + 1, msg);
 		pthread_mutex_unlock(philo->table->print_mutex);
-		pthread_mutex_unlock(philo->table->stop_mutex);
 	}
 	return (1);
 }

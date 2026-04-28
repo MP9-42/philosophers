@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 13:50:56 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/27 22:53:05 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/28 19:30:03 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,10 @@ unsigned long	get_time(void)
 
 bool	simulation_stopped(t_table *table)
 {
-	// pthread_mutex_lock(table->stop_mutex);
-	if (table->stop == true)
-	{
-		// pthread_mutex_unlock(table->stop_mutex);
-		return (true);
-	}
-	// pthread_mutex_unlock(table->stop_mutex);
-	return (false);
+	bool	stopped;
+
+	pthread_mutex_lock(table->stop_mutex);
+	stopped = table->stop;
+	pthread_mutex_unlock(table->stop_mutex);
+	return (stopped);
 }

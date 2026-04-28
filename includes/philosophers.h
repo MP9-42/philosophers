@@ -6,7 +6,7 @@
 /*   By: MP9 <mikjimen@student.42heilbronn.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:23:28 by MP9               #+#    #+#             */
-/*   Updated: 2026/04/27 23:19:43 by MP9              ###   ########.fr       */
+/*   Updated: 2026/04/28 20:39:07 by MP9              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@
 long			philo_atoli(const char *str);
 void			free_all(t_table *table);
 void			kill_threads(t_table *table);
-void			uneven_forks(t_philo *philo);
 void			even_forks(t_philo *philo);
+void			unlock_forks(t_philo *philo);
 int				print_state(t_philo *philo, char *msg);
+int				all_meals_done(t_table *table);
 int				ft_isdigit(char c);
-unsigned int	wait_time(t_table *table, int duration);
+void			wait_time(t_table *table, int duration);
 
 // Parsing
 t_table			*handle_input(char **input);
@@ -50,7 +51,6 @@ void			error_exitpt3(int errnum, t_table *table);
 
 // Routine
 void			*philo_routine(void *arg);
-void			take_forks(t_philo *philo);
 int				eat(t_philo *philo);
 int				sleep_and_think(t_philo *philo);
 bool			simulation_stopped(t_table *table);
